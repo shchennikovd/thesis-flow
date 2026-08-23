@@ -1,0 +1,39 @@
+# Зависимости
+node_modules/
+
+# Артефакты сборки
+dist/
+dist-ssr/
+build/
+
+# Тестирование
+coverage/
+
+# Локальные переменные окружения
+.env
+*.local
+
+# Логи
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Системные файлы
+.DS_Store
+Thumbs.db
+
+# Настройки редактора
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+ThesisFlow_Architecture_Plan.md

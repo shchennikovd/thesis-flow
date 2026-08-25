@@ -30,8 +30,8 @@ export class ApiClient {
 
   public async get<T>(url: string, options: RequestInit = {}): Promise<T> {
     const response = await fetch(`${this.baseUrl}${url}`, {
-      headers: this.getHeaders(options.headers),
       ...options,
+      headers: this.getHeaders(options.headers),
       method: "GET",
     });
 
@@ -39,10 +39,7 @@ export class ApiClient {
   }
 
   public async post<T>(url: string, body?: unknown, options: RequestInit = {}): Promise<T> {
-    const headers = {
-      "Content-Type": "application/json",
-      ...options.headers, 
-    };
+    const headers = this.getHeaders({ "Content-Type": "application/json", ...options.headers });
 
     const response = await fetch(`${this.baseUrl}${url}`, {
       ...options,
@@ -82,8 +79,8 @@ export class ApiClient {
 
   public async delete<T>(url: string, options: RequestInit = {}): Promise<T> {
     const response = await fetch(`${this.baseUrl}${url}`, {
-      headers: this.getHeaders(options.headers),
       ...options,
+      headers: this.getHeaders(options.headers),
       method: "DELETE",
     });
 

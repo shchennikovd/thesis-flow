@@ -1,4 +1,5 @@
 export const endpoints = {
+  auth: "/auth",
   thesis: "/theses",
   workflows: "/workflows",
   stages: "/workflow-stages",

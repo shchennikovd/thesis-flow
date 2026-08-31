@@ -19,4 +19,30 @@ export const handlers = [
       token: "fake-jwt-token-12345"
     });
   }),
+
+  http.get(`${BASE_URL}${endpoints.thesis}`, async () => {
+    await delay(800);
+
+    return HttpResponse.json([
+      {
+        id: "thesis-1",
+        title: "Разработка системы контроля сдачи ВКР",
+        description: "Веб-приложение на React и TypeScript",
+        studentId: "student-123",
+        supervisorId: "supervisor-456",
+        workflowId: "workflow-1",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: "thesis-2",
+        title: "Анализ алгоритмов машинного обучения",
+        studentId: "student-123",
+        supervisorId: "supervisor-789",
+        workflowId: "workflow-2",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      }
+    ]);
+  }),
 ];

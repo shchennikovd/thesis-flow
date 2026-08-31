@@ -45,4 +45,20 @@ export const handlers = [
       }
     ]);
   }),
+
+  http.get(`${BASE_URL}${endpoints.thesis}/:id`, async ({ params }) => {
+    await delay(500); 
+    const { id } = params;
+
+    return HttpResponse.json({
+      id: id,
+      title: "Разработка системы контроля сдачи ВКР",
+      description: "Веб-приложение на React и TypeScript",
+      studentId: "student-123",
+      supervisorId: "supervisor-456",
+      workflowId: "workflow-1",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    });
+  }),
 ];

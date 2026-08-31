@@ -8,5 +8,8 @@ export const workflowStageService = {
   },
   approveStage: (id: ID) => {
     return apiClient.post<IWorkflowStage>(`${endpoints.stages}/${id}/approve`);
+  },
+  getByWorkflowId: (workflowId: ID) => {
+    return apiClient.get<IWorkflowStage[]>(`${endpoints.stages}?workflowId=${workflowId}`);
   }
 };

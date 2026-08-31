@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import { LoginForm } from "@/features/auth/ui/LoginForm";
 import { DashboardPage } from "@/pages/dashboard/DashboardPage";
+import { ThesisDetailsPage } from "@/pages/thesis-details/ThesisDetailsPage";
 
 export const router = createBrowserRouter([
   {
@@ -16,7 +17,12 @@ export const router = createBrowserRouter([
     element: <DashboardPage />,
   },
   {
+    path: "/thesis/:id",
+    element: <ThesisDetailsPage />,
+  },
+  // Всегда в конце 
+  {
     path: "*",
     element: <Navigate to="/" replace />,
-  }
+  },
 ]);

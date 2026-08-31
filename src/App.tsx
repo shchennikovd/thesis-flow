@@ -1,12 +1,11 @@
 import { QueryProvider } from "./app/providers/query-provider";
-import { LoginForm } from "./features/auth/ui/LoginForm";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./app/router/routes";
 
 export default function App() {
   return (
     <QueryProvider>
-      <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
-        <LoginForm />
-      </div>
+      <RouterProvider router={router} />
     </QueryProvider>
   );
 }

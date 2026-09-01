@@ -5,18 +5,13 @@ import { ID } from '../../types/common';
 const BASE_URL = 'http://localhost:3000/api';
 
 let mockStagesDatabase = [
-  {
-    id: "stage-1", workflowId: "workflow-1", title: "Глава 1. Теоретическая часть",
-    description: "Обзор литературы и постановка задачи", order: 1, status: "approved", deadline: "2026-10-01T00:00:00Z",
-  },
-  {
-    id: "stage-2", workflowId: "workflow-1", title: "Глава 2. Практическая реализация",
-    description: "Написание кода и архитектуры", order: 2, status: "in_progress", deadline: "2026-11-01T00:00:00Z",
-  },
-  {
-    id: "stage-3", workflowId: "workflow-1", title: "Глава 3. Тестирование и Выводы",
-    order: 3, status: "pending", deadline: null,
-  }
+  // Этапы для первой ВКР (workflow-1)
+  { id: "stage-1", workflowId: "workflow-1", title: "Глава 1. Теоретическая часть", description: "Обзор литературы", order: 1, status: "approved", deadline: "2026-10-01T00:00:00Z" },
+  { id: "stage-2", workflowId: "workflow-1", title: "Глава 2. Практическая реализация", description: "Написание кода", order: 2, status: "in_progress", deadline: "2026-11-01T00:00:00Z" },
+  { id: "stage-3", workflowId: "workflow-1", title: "Глава 3. Тестирование и Выводы", order: 3, status: "pending", deadline: null },
+  
+  // Этапы для второй ВКР (workflow-2)
+  { id: "stage-4", workflowId: "workflow-2", title: "Сбор датасета", description: "Собрать данные для нейросети", order: 1, status: "in_progress", deadline: "2026-09-15T00:00:00Z" }
 ];
 
 const mockThesesDatabase = [
@@ -68,9 +63,17 @@ export const handlers = [
     return HttpResponse.json(thesis);
   }),
 
-  http.get(`${BASE_URL}${endpoints.stages}`, async () => {
+  http.get(`${BASE_URL}${endpoints.stages}`, async ({ request }) => {
     await delay(600);
-    return HttpResponse.json(mockStagesDatabase);
+    
+    const url = new URL(request.url);
+    const workflowId = url.searchParams.get("workflowId");
+
+    const filteredStages = mockStagesDatabase.filter(
+      (stage) => stage.workflowId === workflowId
+    );
+
+    return HttpResponse.json(filteredStages);
   }),
 
   http.post(`${BASE_URL}${endpoints.stages}/:id/submit`, async ({ params }) => {
@@ -80,10 +83,8 @@ export const handlers = [
       stage.id === params.id ? { ...stage, status: "submitted" } : stage
     );
 
-    return HttpResponse.json({
-      id: params.id,
-      status: "submitted",
-      workflowId: "workflow-1"
-    });
+    const updatedStage = mockStagesDatabase.find(stage => stage.id === params.id);
+
+    return HttpResponse.json(updatedStage);
   }),
 ];

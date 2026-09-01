@@ -1,75 +1,57 @@
-# React + TypeScript + Vite
+# 🎓 ThesisFlow
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
+[![Vite](https://img.shields.io/badge/Vite-B73BFE?style=for-the-badge&logo=vite&logoColor=FFD62E)](https://vitejs.dev/)
+[![React Query](https://img.shields.io/badge/TanStack_Query-FF4154?style=for-the-badge&logo=react-query&logoColor=white)](https://tanstack.com/query/latest)
+[![Zod](https://img.shields.io/badge/Zod-3068B7?style=for-the-badge&logo=zod&logoColor=white)](https://zod.dev/)
+[![MSW](https://img.shields.io/badge/MSW-FF6A33?style=for-the-badge&logo=mockserviceworker&logoColor=white)](https://mswjs.io/)
 
-Currently, two official plugins are available:
+**ThesisFlow** - это пет-проект, имитирующий систему контроля сдачи дипломных работ (ВКР). 
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Главной целью проекта было уйти от стандартных "туду-листов" и реализовать приложение со сложной бизнес-логикой, стейт-машиной и ролевой моделью, сделав основной упор на чистую архитектуру фронтенда.
 
-## React Compiler
+### 🌍 Live Demo: [https://thesis-flow-ashy.vercel.app/](https://thesis-flow-ashy.vercel.app/)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🛠 Что реализовано
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+* **Разделение логики и UI (Headless-подход):** Вся бизнес-логика (правила, стейт-машина) написана на чистом TypeScript и изолирована от React-компонентов.
+* **Стейт-машина для статусов:** Этапы диплома не переключаются хаотично. Переходы (`В работе` -> `На проверке` -> `Утверждено`) жестко контролируются ядром.
+* **RBAC и валидация:** Права зависят от роли (Студент / Руководитель) и принадлежности диплома (Ownership). Данные форм валидируются в рантайме через **Zod**.
+* **Mock-бэкенд:** Приложение работает автономно. Все сетевые запросы перехватываются прямо в браузере через **MSW (Mock Service Worker)** с имитацией in-memory базы данных и задержек сети.
+* **Связка с React:** Управление серверным стейтом реализовано через кастомные хуки на базе **TanStack Query** (без Redux).
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 📂 Архитектура проекта
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Проект разбит на слои по принципу однонаправленной зависимости (в духе Feature-Sliced Design):
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+* `shared/` - инфраструктура: ApiClient, базовые UI-компоненты (Tailwind v4), кастомные классы ошибок.
+* `entities/` - предметная область: типы, статусы, правила переходов (State Machine).
+* `features/` - бизнес-сценарии (Use Cases), DTO-схемы, хуки для мутаций.
+* `widgets/` - сборка логики и UI (например, Kanban-доска этапов).
+* `pages/` - экраны и роутинг.
 
+## 🧪 Тестирование
+Ядро приложения покрыто Unit-тестами с помощью **Vitest**.
+Тесты проверяют логику переходов стейт-машины, систему прав доступа и работу Use-кейсов (через моки сервисов `vi.mock` и проверку асинхронных вызовов).
+
+## 🗺 Roadmap
+
+- [x] **Phase 1 (MVP):** Проектирование TS-ядра, тесты, внедрение MSW, базовая сборка UI на Tailwind, деплой.
+- [ ] **Phase 2:** Добавление Zustand для глобального стейта авторизации и защита роутов (Protected Routes).
+- [ ] **Phase 3:** Drag-and-Drop для доски и имитация загрузки физических файлов.
+- [ ] **Phase 4:** Переход с MSW на реальное REST API.
+
+---
+
+## 🚀 Запуск локально
+
+```bash
+git clone https://github.com/shchennikovd/thesis-flow
+cd thesis-flow
+npm install
+npm run dev
 ```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
-```
+*(Для запуска тестов используйте `npm run test`)*

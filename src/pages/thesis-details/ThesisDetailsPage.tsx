@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/shared/ui/button/Button";
 import { useThesis } from "@/features/thesis/ui/use-thesis";
 import { ID } from "@/shared/types/common";
+import { WorkflowBoard } from "@/widgets/workflow-board/WorkflowBoard";
 
 export function ThesisDetailsPage() {
   const { id } = useParams<{ id: string }>();
@@ -34,11 +35,7 @@ export function ThesisDetailsPage() {
                 <p className="text-gray-600 mb-6">{thesis.description}</p>
               )}
 
-              <div className="mt-8 p-8 border-2 border-dashed border-gray-300 rounded-lg text-center text-gray-500">
-                Здесь скоро будет крутая Kanban-доска с этапами ВКР
-                <br />
-                <span className="text-sm text-gray-400">ID процесса: {thesis.workflowId}</span>
-              </div>
+              <WorkflowBoard thesis={thesis} />
             </>
           )}
 

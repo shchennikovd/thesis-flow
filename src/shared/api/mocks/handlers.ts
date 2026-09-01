@@ -4,6 +4,21 @@ import { ID } from '../../types/common';
 
 const BASE_URL = 'http://localhost:3000/api';
 
+let mockStagesDatabase = [
+  {
+    id: "stage-1", workflowId: "workflow-1", title: "Глава 1. Теоретическая часть",
+    description: "Обзор литературы и постановка задачи", order: 1, status: "approved", deadline: "2026-10-01T00:00:00Z",
+  },
+  {
+    id: "stage-2", workflowId: "workflow-1", title: "Глава 2. Практическая реализация",
+    description: "Написание кода и архитектуры", order: 2, status: "in_progress", deadline: "2026-11-01T00:00:00Z",
+  },
+  {
+    id: "stage-3", workflowId: "workflow-1", title: "Глава 3. Тестирование и Выводы",
+    order: 3, status: "pending", deadline: null,
+  }
+];
+
 const mockThesesDatabase = [
   {
     id: "thesis-1",
@@ -51,5 +66,24 @@ export const handlers = [
     }
 
     return HttpResponse.json(thesis);
+  }),
+
+  http.get(`${BASE_URL}${endpoints.stages}`, async () => {
+    await delay(600);
+    return HttpResponse.json(mockStagesDatabase);
+  }),
+
+  http.post(`${BASE_URL}${endpoints.stages}/:id/submit`, async ({ params }) => {
+    await delay(800);
+    
+    mockStagesDatabase = mockStagesDatabase.map(stage => 
+      stage.id === params.id ? { ...stage, status: "submitted" } : stage
+    );
+
+    return HttpResponse.json({
+      id: params.id,
+      status: "submitted",
+      workflowId: "workflow-1"
+    });
   }),
 ];

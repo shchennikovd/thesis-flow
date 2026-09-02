@@ -1,8 +1,7 @@
 import { http, HttpResponse, delay } from 'msw';
 import { endpoints } from '../endpoints';
-import { ID } from '../../types/common';
 
-const BASE_URL = 'http://localhost:3000/api';
+const BASE_URL = '*/api'; 
 
 let mockStagesDatabase = [
   // Этапы для первой ВКР (workflow-1)
